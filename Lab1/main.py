@@ -21,6 +21,8 @@ for _ in range(5):
 
 print(fa.accepts('abc'))
 
+print(grammar.classify())
+
 
 # Check the 'accepts' method with other FA
 # Define the finite automaton components
