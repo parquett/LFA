@@ -1,4 +1,6 @@
 from collections import defaultdict
+import matplotlib.pyplot as plt
+import networkx as nx
 
 Q = ['q0', 'q1', 'q2', 'q3']  # States
 Sigma = ['a', 'b']  # Alphabet
@@ -82,6 +84,72 @@ def ndfa_to_dfa(Q, Sigma, F, delta):
     return list(state_map.keys()), Sigma, dfa_final_states, dict(dfa_delta_standardized)
 
 
+def visualize_ndfa(Q, Sigma, F, delta, title="Finite Automaton"):
+    G = nx.DiGraph()
+    pos = {}
+    for i, state in enumerate(Q):
+        G.add_node(state)
+        pos[state] = (i * 2, 0)  # Position nodes in a horizontal line
+
+    for (start_state, input_symbol), end_states in delta.items():
+        if isinstance(end_states, list):
+            for end_state in end_states:
+                G.add_edge(start_state, end_state, label=input_symbol)
+        else:
+            G.add_edge(start_state, end_states, label=input_symbol)
+
+    edge_labels = {(u, v): d['label'] for u, v, d in G.edges(data=True)}
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Draw the graph
+    nx.draw(G, pos, with_labels=True, node_size=2000, node_color='skyblue', font_weight='bold', font_size=10)
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='red')
+
+    # Highlight final states with a double circle
+    final_state_pos = {state: pos[state] for state in F}
+    nx.draw_networkx_nodes(G, final_state_pos, nodelist=F, node_shape='o', node_color='skyblue',
+                           linewidths=2.0, edgecolors='black', node_size=2000)
+
+    ax.set_title(title)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.show()
+
+
+def visualize_dfa(Q, Sigma, F, delta, title="Finite Automaton"):
+    G = nx.DiGraph()
+    pos = {}
+    node_labels = {}
+    step = 0
+    for state in Q:
+        # Ensure unique positions for each state
+        pos[state] = (step, 0)
+        node_labels[state] = state
+        step += 1
+
+    # Add edges based on transitions
+    for start_state, transitions in delta.items():
+        for input_symbol, end_state in transitions.items():
+            G.add_edge(start_state, end_state, label=input_symbol)
+
+    edge_labels = nx.get_edge_attributes(G, 'label')
+    fig, ax = plt.subplots(figsize=(8, 8))
+
+    # Draw the FA graph
+    nx.draw(G, pos, with_labels=True, node_size=1500, node_color='lightblue', font_size=10, font_weight='bold')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_color='green')
+
+    # Draw double circles for final states
+    for final_state in F:
+        nx.draw_networkx_nodes(G, pos, nodelist=[final_state], node_size=1800, node_color='lightblue',
+                               edgecolors='black', linewidths=2)
+
+    ax.set_title(title)
+    plt.tight_layout()
+    plt.axis('off')
+    plt.show()
+
+
 # Check if our FA is DFA or NDFA
 print("Is DFA:", is_dfa(Q, Sigma, delta), "\n")
 
@@ -98,3 +166,6 @@ print("DFA Transition Function:", dfa_delta)
 # Check the conversion
 print("Is DFA:", is_dfa(dfa_states, dfa_sigma, dfa_delta))
 
+# Visualize FA
+visualize_ndfa(Q, Sigma, F, delta, "NDFA Visualization")
+visualize_dfa(dfa_states, dfa_sigma, dfa_final_states, dfa_delta, "DFA Visualization")
