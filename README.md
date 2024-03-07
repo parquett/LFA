@@ -1,2 +1,2 @@
 # LFA
-Repo for course "Languages Formale and Automaton"
+Repo for course "Formal Languages and Automaton"
