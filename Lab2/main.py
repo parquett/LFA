@@ -13,10 +13,10 @@ delta = {  # Transition function
 }
 
 # FA from previous Lab
-# Q1 = ['F', 'B', 'D', 'S']
-# Sigma1 = ['b', 'c', 'a']
-# F1 = ['F']
-# delta1 = {  # Transition function
+# Q = ['F', 'B', 'D', 'S']
+# Sigma = ['b', 'c', 'a']
+# F = ['F']
+# delta = {  # Transition function
 #     ('B', 'a'): ['D'],
 #     ('B', 'b'): ['B'],
 #     ('B', 'C'): ['S'],  # Non-deterministic part
