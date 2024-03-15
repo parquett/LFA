@@ -1,4 +1,4 @@
-from token import *
+from mytoken import *
 
 
 class Lexer:
