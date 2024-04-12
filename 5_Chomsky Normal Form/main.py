@@ -4,11 +4,11 @@ from converter import ChomskyNormalForm
 variables = {'S', 'A', 'B', 'C', 'D'}
 terminals = {'a', 'b'}
 productions = {
-    'S': ['aB', 'A'],
-    'A': ['bAa', 'aS', 'a'],
-    'B': ['AbB', 'BS', 'a', 'ε'],
+    'S': ['aB', 'DA'],
+    'A': ['a', 'BD', 'bDAB'],
+    'B': ['b', 'BA'],
     'C': ['BA'],
-    'D': ['a']
+    'D': ['ε', 'BA']
 }
 start_symbol = 'S'
 
